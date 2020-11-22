@@ -1,40 +1,19 @@
-public class NotImplementedFraction implements IFraction{
+import java.lang.UnsupportedOperationException
 
-    private final int numerator;
-    private final int denominator;
-
-    public NotImplementedFraction(int numerator, int denominator) {
-        this.numerator = numerator;
-        this.denominator = denominator;
+class NotImplementedFraction(override val numerator: Int, override val denominator: Int) : IFraction {
+    override fun plus(other: IFraction?): IFraction? {
+        throw UnsupportedOperationException()
     }
 
-    @Override
-    public Integer getNumerator() {
-        return numerator;
+    override fun minus(other: IFraction?): IFraction? {
+        throw UnsupportedOperationException()
     }
 
-    @Override
-    public Integer getDenominator() {
-        return denominator;
+    override fun times(other: IFraction?): IFraction? {
+        throw UnsupportedOperationException()
     }
 
-    @Override
-    public IFraction plus(IFraction other) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public IFraction minus(IFraction other) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public IFraction times(IFraction other) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public IFraction dividedBy(IFraction other) {
-        throw new UnsupportedOperationException();
+    override fun dividedBy(other: IFraction?): IFraction? {
+        throw UnsupportedOperationException()
     }
 }

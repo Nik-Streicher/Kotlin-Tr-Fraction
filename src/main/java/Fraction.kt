@@ -1,66 +1,48 @@
-import org.jetbrains.annotations.NotNull;
+import java.lang.ArithmeticException
 
-public class Fraction implements IFraction {
-
-    private final Integer numerator, denominator;
-
-    public Fraction(@NotNull Integer numerator, @NotNull Integer denominator) {
-        this.numerator = numerator;
-
-        if (denominator == 0){
-            throw new ArithmeticException("Divide by zero is not allowed");
-        }
-        else this.denominator = denominator;
+class Fraction(private val numerator: Int, denominator: Int) : IFraction {
+    private val denominator: Int? = null
+    private fun reduceFraction(numerator: Int, denominator: Int): Fraction {
+        var numerator = numerator
+        var denominator = denominator
+        val d: Int
+        d = greatestCommonDivisor(numerator, denominator)
+        numerator = numerator / d
+        denominator = denominator / d
+        return Fraction(numerator, denominator)
     }
 
-    private Fraction reduceFraction(int numerator, int denominator) {
-        int d;
-        d = greatestCommonDivisor(numerator, denominator);
-
-        numerator = numerator / d;
-        denominator = denominator / d;
-        return new Fraction(numerator, denominator);
+    private fun greatestCommonDivisor(a: Int, b: Int): Int {
+        return if (b == 0) a else greatestCommonDivisor(b, a % b)
     }
 
-    private int greatestCommonDivisor(int a, int b) {
-        if (b == 0)
-            return a;
-        return greatestCommonDivisor(b, a % b);
+    override fun getNumerator(): Int {
+        return numerator
     }
 
-    @Override
-    public @NotNull
-    Integer getNumerator() {
-        return numerator;
+    override fun getDenominator(): Int {
+        return denominator!!
     }
 
-    @Override
-    public @NotNull
-    Integer getDenominator() {
-        return denominator;
+    override fun plus(other: IFraction): IFraction {
+        return reduceFraction(numerator * other.denominator + denominator!! * other.numerator, denominator * other.denominator)
     }
 
-    @Override
-    public @NotNull
-    IFraction plus(@NotNull IFraction other) {
-        return reduceFraction((numerator * other.getDenominator()) + (denominator * other.getNumerator()), denominator * other.getDenominator());
+    override fun minus(other: IFraction): IFraction {
+        return reduceFraction(numerator * other.denominator - denominator!! * other.numerator, denominator * other.denominator)
     }
 
-    @Override
-    public @NotNull
-    IFraction minus(@NotNull IFraction other) {
-        return reduceFraction((numerator * other.getDenominator()) - (denominator * other.getNumerator()), denominator * other.getDenominator());
+    override fun times(other: IFraction): IFraction {
+        return reduceFraction(numerator * other.numerator, denominator!! * other.denominator)
     }
 
-    @Override
-    public @NotNull
-    IFraction times(@NotNull IFraction other) {
-        return reduceFraction(this.numerator * other.getNumerator(), this.denominator * other.getDenominator());
+    override fun dividedBy(other: IFraction): IFraction {
+        return reduceFraction(numerator * other.denominator, denominator!! * other.numerator)
     }
 
-    @Override
-    public @NotNull
-    IFraction dividedBy(@NotNull IFraction other) {
-        return reduceFraction(this.numerator * other.getDenominator(), this.denominator * other.getNumerator());
+    init {
+        if (denominator == 0) {
+            throw ArithmeticException("Divide by zero is not allowed")
+        } else this.denominator = denominator
     }
 }
